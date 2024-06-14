@@ -176,7 +176,11 @@ export const makeCompartmentConstructor = (
   intrinsics,
   markVirtualizedNativeFunction,
 ) => {
-  function Compartment(endowments = {}, moduleMap = {}, options = {}) {
+  function Compartment(
+    endowmentsOption = {},
+    moduleMapOption = {},
+    options = {},
+  ) {
     if (new.target === undefined) {
       throw TypeError(
         "Class constructor Compartment cannot be invoked without 'new'",
@@ -195,6 +199,8 @@ export const makeCompartmentConstructor = (
       importMetaHook,
     } = options;
     const globalTransforms = [...transforms, ...__shimTransforms__];
+    const endowments = { __proto__: null, ...endowmentsOption };
+    const moduleMap = { __proto__: null, ...moduleMapOption };
 
     // Map<FullSpecifier, ModuleCompartmentRecord>
     const moduleRecords = new Map();
