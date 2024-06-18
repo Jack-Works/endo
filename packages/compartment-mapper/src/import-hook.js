@@ -475,7 +475,8 @@ export function makeImportNowHookMaker(
       compartmentDescriptor;
     compartmentDescriptor.modules = moduleDescriptors;
 
-    const { policy = Object.create(null) } = compartmentDescriptor;
+    let { policy } = compartmentDescriptor;
+    policy = policy || Object.create(null);
 
     // associates modules with compartment descriptors based on policy
     // which wouldn't otherwise be there
@@ -496,6 +497,13 @@ export function makeImportNowHookMaker(
 
     /** @type {ImportNowHook} */
     const importNowHook = moduleSpecifier => {
+      // defensive; this should be caught earlier
+      if (!policy.dynamic) {
+        throw new Error(
+          `Dynamic require not allowed in compartment ${q(compartmentDescriptor.name)}`,
+        );
+      }
+
       // Collate candidate locations for the moduleSpecifier,
       // to support Node.js conventions and similar.
       const candidates = [moduleSpecifier];
@@ -630,6 +638,7 @@ export function makeImportNowHookMaker(
       }
 
       if (exitModuleImportNowHook) {
+        // this hook is responsible for ensuring that the moduleSpecifier actually refers to an exit module
         const record = exitModuleImportNowHook(
           moduleSpecifier,
           packageLocation,
