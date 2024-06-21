@@ -176,6 +176,12 @@ export {};
  */
 
 /**
+ * @callback IsAbsoluteFn
+ * @param {string} location
+ * @returns {boolean}
+ */
+
+/**
  * Node.js' `url.pathToFileURL` only returns a {@link URL}.
  * @callback PathToFileURLFn
  * @param {string} location
@@ -198,12 +204,19 @@ export {};
  * @property {FileURLToPathFn} [fileURLToPath]
  * @property {PathToFileURLFn} [pathToFileURL]
  * @property {RequireResolveFn} [requireResolve]
+ * @property {IsAbsoluteFn} [isAbsolute]
+ */
+
+/**
+ * These properties are necessary for dynamic require support
+ *
+ * @typedef {'fileURLToPath'|'readSync'|'isAbsolute'} SyncReadPowersProps
  */
 
 /**
  * {@link ReadPowers} supporting synchronous reads and dynamic requires
  *
- * @typedef {ReadPowers & {readSync: ReadSyncFn, fileURLToPath: FileURLToPathFn}} SyncReadPowers
+ * @typedef {Omit<ReadPowers, SyncReadPowersProps> & Required<Pick<ReadPowers, SyncReadPowersProps>>} SyncReadPowers
  */
 
 /**
@@ -726,6 +739,11 @@ export {};
 /**
  * @typedef CryptoAPI
  * @property {typeof import('crypto').createHash} createHash
+ */
+
+/**
+ * @typedef PathAPI
+ * @property {IsAbsoluteFn} isAbsolute
  */
 
 /**
