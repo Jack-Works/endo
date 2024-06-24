@@ -27,6 +27,7 @@
 import { attenuateModuleHook, enforceModulePolicy } from './policy.js';
 import { resolve } from './node-module-specifier.js';
 import { unpackReadPowers } from './powers.js';
+import { DYNAMIC_POLICY_VALUE } from './policy-format.js';
 
 // q, as in quote, for quoting strings in error messages.
 const q = JSON.stringify;
@@ -412,7 +413,7 @@ export const makeImportHookMaker = (
  * @param {SyncReadPowers} readPowers
  * @param {string} baseLocation
  * @param {MakeImportNowHookMakerOptions} options
- * @returns {ImportNowHookMaker|undefined}
+ * @returns {ImportNowHookMaker}
  */
 export function makeImportNowHookMaker(
   readPowers,
@@ -497,8 +498,7 @@ export function makeImportNowHookMaker(
 
     /** @type {ImportNowHook} */
     const importNowHook = moduleSpecifier => {
-      // defensive; this should be caught earlier
-      if (!policy.dynamic) {
+      if (!policy[DYNAMIC_POLICY_VALUE]) {
         throw new Error(
           `Dynamic require not allowed in compartment ${q(compartmentDescriptor.name)}`,
         );

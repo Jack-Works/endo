@@ -466,7 +466,7 @@ export {};
  * @typedef {object} SyncExtraLinkOptions
  * @property {ResolveHook} [resolve]
  * @property {ImportHookMaker} makeImportHook
- * @property {ImportNowHookMaker} [makeImportNowHook]
+ * @property {ImportNowHookMaker} makeImportNowHook
  * @property {ParserForLanguage} parserForLanguage
  * @property {LanguageForExtension} [languageForExtension]
  * @property {SyncModuleTransforms} [syncModuleTransforms]
@@ -588,7 +588,7 @@ export {};
  * @property {Array<string>} [searchSuffixes]
  * @property {Record<string, string>} [commonDependencies]
  * @property {SourceMapHook} [sourceMapHook]
- * @property {ExitModuleImportNowHook} [importNowHook]
+ * @property {ExitModuleImportNowHook} importNowHook
  * @property {Record<string, ParserImplementation>} [parserForLanguage]
  * @property {LanguageForExtension} [languageForExtension]
  */
